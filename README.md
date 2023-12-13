@@ -410,7 +410,7 @@ void EventManagementSystem::campusGuide() {
 }
 ```
 
-## 6菜单设计
+# 6菜单设计
 ```
 cout << "================================\n";        
 cout << "=======       菜单      ========\n";       
