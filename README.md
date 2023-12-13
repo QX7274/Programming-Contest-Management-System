@@ -421,3 +421,29 @@ cout << "=======    4. 叫号系统   ========\n";
 cout << "=======    5. 导航服务   ========\n";        
 cout << "=======      0. 退出    ========\n";        
 cout << "================================\n";
+采用do-while循环操作菜单，采用switch语句对菜单进行选择。
+# 7类定义
+class ProgrammingContestManagementSystem
+{
+public:    
+      void deleteTeam(string teamNumber);    
+      void deletefile(string id);    
+      TeamNode* rotateLeft(TeamNode* node);    
+      TeamNode* rotateRight(TeamNode* node);    
+      int getHeight(TeamNode* node);    
+      int getBalanceFactor(TeamNode* node);    
+      TeamNode* searchNode(TeamNode* current, const string& teamNumber);    
+      TeamNode* deleteNode(TeamNode* current, const string& teamNumber);    
+      TeamNode* findMinimumNode(TeamNode* current);    
+      void updateInFile(string teamNumber, const Team& updatedInfo);    
+      void modifyTeam();    
+      void Management();    
+      void searchTeam();    
+      void searchTeamByUniversity(const string& university, const vector<Team>& teamInfos);    
+      void finalsCallSystem(const vector<Team>& teamInfos);    
+      void insertNode(TeamNode* current, TeamNode* newNode);    
+      void loadTeamsFromFile();    
+      void addTeam();    
+      void campusGuide();    
+      int calculatePathLength(TeamNode* node, const string& teamNumber, int level);
+};
