@@ -3,7 +3,7 @@
 中国大学生计算机设计大赛是我国高校面向本科生的计算机应用设计大赛，大赛旨在激发学生学习计算机知识和技能的兴趣与潜能，提高学生运用信息技术解决实际问题的综合能力。通过大赛这种计算机教学实践形式，可展示师生的教与学成果，最终以赛促学，以赛促教，以赛促创。该赛事在历届学生中影响力较大，参与者众多。
 利用数据结构课程所学的相关知识，为中国大学生计算机设计大赛江苏省组委会设计一个省级赛事管理系统。以2021年省赛数据为例，通过对数据的处理和分析，设计合理的数据结构对赛事相关的数据进行存储及处理。赛事相关数据存储在文本文件和excel文件中，文件中不同的数据项之间均使用#分隔，下图给出了文件team.txt中参赛信息的对应数据示例。
 
-![image](https://github.com/QX7274/Programming-Contest-Management-System/blob/main/%E6%95%B0%E6%8D%AE%E8%B5%84%E6%96%99/image.png)
+<div align=center><img src="https://github.com/QX7274/Programming-Contest-Management-System/blob/main/%E6%95%B0%E6%8D%AE%E8%B5%84%E6%96%99/image.png" </div>
 
 
 
@@ -456,6 +456,8 @@ public:
       void campusGuide();    
       int calculatePathLength(TeamNode* node, const string& teamNumber, int level);
 };
+# 校园地图
 
 
-！[image]（https://github.com/QX7274/Programming-Contest-Management-System/blob/main/数据资料/江科大地图a.jpg）
+
+<div align=center><img src="https://github.com/QX7274/Programming-Contest-Management-System/blob/main/数据资料/江科大地图a.jpg" </div>
