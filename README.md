@@ -27,7 +27,7 @@
 
 // 参赛队伍结构体
 
-‘struct Team {
+struct Team {
 
     string teamNumber;
 
@@ -41,11 +41,12 @@
 
     string guideTeacher;
 
-};’
+};
+
 
 // 参赛队伍节点结构体
 
-‘struct TeamNode {
+struct TeamNode {
 
     Team team;
 
@@ -81,7 +82,8 @@
 
    
 
-    // 构造函数，接受队伍编号作为参数
+
+// 构造函数，接受队伍编号作为参数
 
     TeamNode(const string& number, const string& projectName,const string& university, const string& eventCategory, const string& participants, const string& guideTeacher) {
 
@@ -103,8 +105,7 @@
 
        right = nullptr;
 
-    }’
-
+    }
 
 
 
@@ -114,8 +115,8 @@
 
 ## 1.3 算法实现
 //添加队伍信息
-‘void ProgrammingContestManagementSystem::AddTeam()
 
+void ProgrammingContestManagementSystem::AddTeam()
 {
 
     //首先创建新节点，以便存放需要添加的队伍信息
@@ -150,12 +151,12 @@
 
     cout << "参赛队伍信息已添加。\n";
 
-}’
+}
+
 
 //删除参赛队伍信息
 
-‘void ProgrammingContestManagementSystem::DeleteTeam(string teamNumber)
-
+void ProgrammingContestManagementSystem::DeleteTeam(string teamNumber)
 {
 
     //如果根节点为空，说明本来就没有参赛队伍信息，无法进行删除
@@ -174,7 +175,7 @@
     // 执行删除操作
 
 
-}’
+}
 
 
 
@@ -197,24 +198,26 @@
 
 ## 2.2 算法设计
 1、生成随机数。
-‘srand（（unsigned int）time（nullptr））;
-rand（）%100+60;’
+
+srand（（unsigned int）time（nullptr））;
+rand（）%100+60;
 
 1、采用字符串用于存储和处理队伍基本信息。
 
 //从输入流中读取一行文本，并将其存储到一个字符串变量中
 
-   ‘string line;’
+string line;
 
 2、采用文件流用于读取txt文件。
 
-‘ifstream inFile("team.txt");//打开文件
+ifstream inFile("team.txt");//打开文件
 
-inFile.close();//关闭文件’
+inFile.close();//关闭文件
 
 3、采用二叉排序树来存储参赛队伍信息，根据参赛队伍编号（String类型）大小来构建二叉排序树，可以实现参赛队伍信息的添加、删除和修改。
 
-‘TeamNode* root;//二叉排序树根节点
+
+TeamNode* root;//二叉排序树根节点
 
 // 为当前行的信息用队伍编号创建一个新的队伍节点
 
@@ -238,13 +241,14 @@ inFile.close();//关闭文件’
 
             insertNode(root, newNode);
 
-        }’
+        }
+
 
 ## 2.3 算法实现
 
 //将赛事信息从team.txt文件中读取出来并放入二叉排序树中
 
-‘void ProgrammingContestManagementSystem::LoadTeamsFromFile()
+void ProgrammingContestManagementSystem::LoadTeamsFromFile()
 
 {
 
@@ -262,6 +266,7 @@ inFile.close();//关闭文件’
     //读取完毕，关闭文件
 
 }
+
 
 //按编号查找队伍并输出ASL
 
@@ -281,7 +286,7 @@ void ProgrammingContestManagementSystem::SearchTeam()
 
     //找到要查询的节点
 
-}’
+}
 
 
 # 3 决赛分组，生成秩序册
@@ -296,7 +301,7 @@ void ProgrammingContestManagementSystem::SearchTeam()
 ## 3.3 算法实现
 //按学校查找队伍
 
-‘void ProgrammingContestManagementSystem::SearchTeamByUniversity(const string& university, const vector<Team>& teamInfos) {
+void ProgrammingContestManagementSystem::SearchTeamByUniversity(const string& university, const vector<Team>& teamInfos) {
 
     vector<Team> matchedTeams;
 
@@ -305,7 +310,7 @@ void ProgrammingContestManagementSystem::SearchTeam()
     // 使用选择排序按参赛队编号排序
 
     // 输出排序后的参赛团队信息
-}’
+}
 
 
 # 4 决赛叫号模拟
@@ -324,7 +329,7 @@ void ProgrammingContestManagementSystem::SearchTeam()
 ## 4.3 算法实现
 // 决赛叫号系统
 
-‘void ProgrammingContestManagementSystem::finalsCallSystem(const vector<Team>& teamInfos) {
+void ProgrammingContestManagementSystem::finalsCallSystem(const vector<Team>& teamInfos) {
 
     // 按照赛事类别将参赛队伍分组
 
@@ -333,7 +338,7 @@ void ProgrammingContestManagementSystem::SearchTeam()
     // 将参赛队伍按照顺序分配到决赛室
 
     // 模拟决赛叫号
-}’
+}
 
 
 # 5 校园导航
@@ -347,7 +352,8 @@ void ProgrammingContestManagementSystem::SearchTeam()
 
 ## 5.3 算法实现
 //导航系统
-‘void EventManagementSystem::campusGuide() {
+
+void EventManagementSystem::campusGuide() {
 
     unordered_map<int, string> destinationInfo = {
 
@@ -410,9 +416,11 @@ void ProgrammingContestManagementSystem::SearchTeam()
     //查找并输出路径
     
     //查找并输出最短路径
-}’
+}
+
+
 ## 6菜单设计
-‘cout << "================================\n";        
+{cout << "================================\n";        
 cout << "=======       菜单      ========\n";       
 cout << "=======1. 管理参赛队伍信息========\n";        
 cout << "=======2. 读取参赛队伍信息========\n";        
@@ -420,11 +428,12 @@ cout << "=======3. 查询参赛队伍信息========\n";
 cout << "=======    4. 叫号系统   ========\n";        
 cout << "=======    5. 导航服务   ========\n";        
 cout << "=======      0. 退出    ========\n";        
-cout << "================================\n";’
+cout << "================================\n";}
 采用do-while循环操作菜单，采用switch语句对菜单进行选择。
+
 # 7类定义
-‘class ProgrammingContestManagementSystem
-{
+
+class ProgrammingContestManagementSystem{
 public:    
       void deleteTeam(string teamNumber);    
       void deletefile(string id);    
@@ -446,5 +455,7 @@ public:
       void addTeam();    
       void campusGuide();    
       int calculatePathLength(TeamNode* node, const string& teamNumber, int level);
-};’
+};
+
+
 ！[image]（https://github.com/QX7274/Programming-Contest-Management-System/blob/main/数据资料/江科大地图a.jpg）
