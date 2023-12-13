@@ -320,7 +320,7 @@ void ProgrammingContestManagementSystem::SearchTeamByUniversity(const string& un
 ## 4.3 算法实现
 决赛叫号系统
 ```
-void ProgrammingContestManagementSystem::finalsCallSystem(const vector<Team>& teamInfos) {
+void ProgrammingContestManagementSystem::FinalsCallSystem(const vector<Team>& teamInfos) {
 
     // 按照赛事类别将参赛队伍分组
 
@@ -344,7 +344,7 @@ void ProgrammingContestManagementSystem::finalsCallSystem(const vector<Team>& te
 ## 5.3 算法实现
 导航系统
 ```
-void EventManagementSystem::campusGuide() {
+void EventManagementSystem::CampusGuide() {
 
     unordered_map<int, string> destinationInfo = {
 
@@ -428,26 +428,26 @@ cout << "================================\n";
 ```
 class ProgrammingContestManagementSystem{
 public:    
-      void deleteTeam(string teamNumber);    
-      void deletefile(string id);    
-      TeamNode* rotateLeft(TeamNode* node);    
-      TeamNode* rotateRight(TeamNode* node);    
-      int getHeight(TeamNode* node);    
-      int getBalanceFactor(TeamNode* node);    
-      TeamNode* searchNode(TeamNode* current, const string& teamNumber);    
-      TeamNode* deleteNode(TeamNode* current, const string& teamNumber);    
-      TeamNode* findMinimumNode(TeamNode* current);    
-      void updateInFile(string teamNumber, const Team& updatedInfo);    
-      void modifyTeam();    
+      void DeleteTeam(string teamNumber);    
+      void Deletefile(string id);    
+      TeamNode* RotateLeft(TeamNode* node);    
+      TeamNode* RotateRight(TeamNode* node);    
+      int GetHeight(TeamNode* node);    
+      int GetBalanceFactor(TeamNode* node);    
+      TeamNode* SearchNode(TeamNode* current, const string& teamNumber);    
+      TeamNode* DeleteNode(TeamNode* current, const string& teamNumber);    
+      TeamNode* FindMinimumNode(TeamNode* current);    
+      void UpdateInFile(string teamNumber, const Team& updatedInfo);    
+      void ModifyTeam();    
       void Management();    
-      void searchTeam();    
-      void searchTeamByUniversity(const string& university, const vector<Team>& teamInfos);    
-      void finalsCallSystem(const vector<Team>& teamInfos);    
-      void insertNode(TeamNode* current, TeamNode* newNode);    
-      void loadTeamsFromFile();    
-      void addTeam();    
-      void campusGuide();    
-      int calculatePathLength(TeamNode* node, const string& teamNumber, int level);
+      void SearchTeam();    
+      void SearchTeamByUniversity(const string& university, const vector<Team>& teamInfos);    
+      void FinalsCallSystem(const vector<Team>& teamInfos);    
+      void InsertNode(TeamNode* current, TeamNode* newNode);    
+      void LoadTeamsFromFile();    
+      void AddTeam();    
+      void CampusGuide();    
+      int CalculatePathLength(TeamNode* node, const string& teamNumber, int level);
 };
 ```
 # 校园地图
