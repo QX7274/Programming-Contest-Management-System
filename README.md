@@ -3,7 +3,9 @@
 中国大学生计算机设计大赛是我国高校面向本科生的计算机应用设计大赛，大赛旨在激发学生学习计算机知识和技能的兴趣与潜能，提高学生运用信息技术解决实际问题的综合能力。通过大赛这种计算机教学实践形式，可展示师生的教与学成果，最终以赛促学，以赛促教，以赛促创。该赛事在历届学生中影响力较大，参与者众多。
 利用数据结构课程所学的相关知识，为中国大学生计算机设计大赛江苏省组委会设计一个省级赛事管理系统。以2021年省赛数据为例，通过对数据的处理和分析，设计合理的数据结构对赛事相关的数据进行存储及处理。赛事相关数据存储在文本文件和excel文件中，文件中不同的数据项之间均使用#分隔，下图给出了文件team.txt中参赛信息的对应数据示例。
 
-<div align=center><img src="https://github.com/QX7274/Programming-Contest-Management-System/blob/main/%E6%95%B0%E6%8D%AE%E8%B5%84%E6%96%99/image.png" </div>
+<div align=center>
+<img src="https://github.com/QX7274/Programming-Contest-Management-System/blob/main/%E6%95%B0%E6%8D%AE%E8%B5%84%E6%96%99/image.png" />
+</div>
 
 
 
@@ -25,8 +27,8 @@
 ## 1.2算法设计
 1、采用结构体定义参赛队伍的结构，包括参赛队编号、参赛作品名称、参赛学校、赛事类别、参赛者、指导教师等成员变量。定义二叉排序树的节点也需要采用结构体来定义。
 
-// 参赛队伍结构体
-
+参赛队伍结构体
+```
 struct Team {
 
     string teamNumber;
@@ -42,10 +44,10 @@ struct Team {
     string guideTeacher;
 
 };
+```
 
-
-// 参赛队伍节点结构体
-
+参赛队伍节点结构体
+```
 struct TeamNode {
 
     Team team;
@@ -79,12 +81,12 @@ struct TeamNode {
        right = nullptr;
 
     }
-
+```
    
 
 
-// 构造函数，接受队伍编号作为参数
-
+构造函数，接受队伍编号作为参数
+```
     TeamNode(const string& number, const string& projectName,const string& university, const string& eventCategory, const string& participants, const string& guideTeacher) {
 
        TeamNode* node = new TeamNode();
@@ -106,7 +108,7 @@ struct TeamNode {
        right = nullptr;
 
     }
-
+```
 
 
 2、在对节点进行相关操作时，应该注意二叉树的平衡，适当做出调整。
@@ -114,8 +116,8 @@ struct TeamNode {
 
 
 ## 1.3 算法实现
-//添加队伍信息
-
+添加队伍信息
+```
 void ProgrammingContestManagementSystem::AddTeam()
 {
 
@@ -152,31 +154,24 @@ void ProgrammingContestManagementSystem::AddTeam()
     cout << "参赛队伍信息已添加。\n";
 
 }
+```
 
-
-//删除参赛队伍信息
-
+删除参赛队伍信息
+```
 void ProgrammingContestManagementSystem::DeleteTeam(string teamNumber)
 {
 
-    //如果根节点为空，说明本来就没有参赛队伍信息，无法进行删除
-
-   
+    //如果根节点为空，说明本来就没有参赛队伍信息，无法进行删除 
 
     // 查找要删除的节点，将查找到的节点赋值给一个新的节点targetNode
 
-
-
     //如果找不到要删除的节点，给出提示
-
 
     //找到要删除的节点
 
     // 执行删除操作
-
-
 }
-
+```
 
 
 
@@ -198,25 +193,25 @@ void ProgrammingContestManagementSystem::DeleteTeam(string teamNumber)
 
 ## 2.2 算法设计
 1、生成随机数。
-
+```
 srand（（unsigned int）time（nullptr））;
 rand（）%100+60;
-
+```
 1、采用字符串用于存储和处理队伍基本信息。
 
 //从输入流中读取一行文本，并将其存储到一个字符串变量中
-
+```
 string line;
-
+```
 2、采用文件流用于读取txt文件。
-
+```
 ifstream inFile("team.txt");//打开文件
 
 inFile.close();//关闭文件
-
+```
 3、采用二叉排序树来存储参赛队伍信息，根据参赛队伍编号（String类型）大小来构建二叉排序树，可以实现参赛队伍信息的添加、删除和修改。
 
-
+```
 TeamNode* root;//二叉排序树根节点
 
 // 为当前行的信息用队伍编号创建一个新的队伍节点
@@ -242,12 +237,12 @@ TeamNode* root;//二叉排序树根节点
             insertNode(root, newNode);
 
         }
-
+```
 
 ## 2.3 算法实现
 
-//将赛事信息从team.txt文件中读取出来并放入二叉排序树中
-
+将赛事信息从team.txt文件中读取出来并放入二叉排序树中
+```
 void ProgrammingContestManagementSystem::LoadTeamsFromFile()
 
 {
@@ -264,12 +259,11 @@ void ProgrammingContestManagementSystem::LoadTeamsFromFile()
         //如果根节点不空，则将创建的新节点插入到二叉排序树中
 
     //读取完毕，关闭文件
-
 }
+```
 
-
-//按编号查找队伍并输出ASL
-
+按编号查找队伍并输出ASL
+```
 void ProgrammingContestManagementSystem::SearchTeam()
 
 {
@@ -285,9 +279,8 @@ void ProgrammingContestManagementSystem::SearchTeam()
     //查找要查询的节点并计算路径长度
 
     //找到要查询的节点
-
 }
-
+```
 
 # 3 决赛分组，生成秩序册
 根据赛事类别将参赛队伍分配到17个决赛室（编号为1~17）。秩序册中每个决赛室的进场顺序为初赛成绩降序排列。（排序算法从选择排序、插入排序、希尔排序、归并排序、堆排序中选择一种，并为选择该算法的原因做出说明）
@@ -299,8 +292,8 @@ void ProgrammingContestManagementSystem::SearchTeam()
 采用选择排序算法进行排序，每次从待排序的元素中选择最小（或最大）的元素，将其与未排序部分的第一个元素交换位置，直到所有元素都排序完成。选择排序的时间复杂度是O(n^2)，其中n是参赛队伍的数量，每个学校的参赛团队数量较小，选择排序的性能足够满足需求，并且实现简单。
 
 ## 3.3 算法实现
-//按学校查找队伍
-
+按学校查找队伍
+```
 void ProgrammingContestManagementSystem::SearchTeamByUniversity(const string& university, const vector<Team>& teamInfos) {
 
     vector<Team> matchedTeams;
@@ -311,7 +304,7 @@ void ProgrammingContestManagementSystem::SearchTeamByUniversity(const string& un
 
     // 输出排序后的参赛团队信息
 }
-
+```
 
 # 4 决赛叫号模拟
 所有参赛队按赛事组织文件中的赛事类别分到17个决赛室，比赛现场会设置大型候赛区，场地中有大屏以时间线动态展示各决赛室中正在决赛的队伍，侯赛的队伍及比赛结束的队伍信息。请编写程序模拟候赛区大屏上动态展示各参赛队候场、比赛中、比赛结束的状态。 
@@ -327,8 +320,8 @@ void ProgrammingContestManagementSystem::SearchTeamByUniversity(const string& un
 根据赛事类别将参赛队伍分配到不同的决赛室，并按照顺序叫号让队伍进入赛场进行比赛。函数接受一个参数 “teamInfos”，即存储参赛队伍信息的向量。首先，创建一个无序映射 “categoryMap”，用于按照赛事类别将参赛队伍分组。遍历 “teamInfos” 向量中的每个参赛队伍，将其加入到对应赛事类别的向量中。然后，创建一个向量 “categories”，用于存储赛事类别，并进行排序，以确保按照字母顺序输出。接下来，定义变量 “numFinalRooms” 表示决赛室的数量，并创建一个二维向量 “finalRooms”，用于存储每个决赛室中的参赛队伍。通过遍历排序后的赛事类别向量 “categories”，将对应赛事类别的参赛队伍按顺序分配到不同的决赛室中。使用“roomIndex”变量追踪当前的决赛室索引，并将参赛队伍依次添加到相应的决赛室中。当“roomIndex”超过决赛室数量时，使用取余操作使其循环回到第一个决赛室。最后，使用循环遍历每个决赛室，并依次输出决赛室的编号。对于每个决赛室，遍历其中的参赛队伍，并输出参赛队编号，表示队伍进入赛场进行比赛。使用 “this_thread::sleep_for()”函数模拟比赛进行，每次比赛结束前等待 0.5 秒。输出比赛结束提示，并输出空行以分隔不同的决赛室。实现了一个决赛叫号系统，将参赛队伍按照赛事类别分配到不同的决赛室，并模拟比赛叫号过程。
 
 ## 4.3 算法实现
-// 决赛叫号系统
-
+决赛叫号系统
+```
 void ProgrammingContestManagementSystem::finalsCallSystem(const vector<Team>& teamInfos) {
 
     // 按照赛事类别将参赛队伍分组
@@ -339,7 +332,7 @@ void ProgrammingContestManagementSystem::finalsCallSystem(const vector<Team>& te
 
     // 模拟决赛叫号
 }
-
+```
 
 # 5 校园导航
 为参赛者提供决赛主办地的各种路径导航的查询服务，以我校长山校区提供比赛场地为例，为参赛者提供不少于12个目标地的导航。为参赛者提供校园地图中任意目标地（建筑物）相关信息的查询；提供图中任意目标地（建筑物）的问路查询。需输出目的地（建筑物）名称、代号、简介等信息；最短路径的输出需包含途经地及最短路径值；并分析主要算法的时间复杂度。
@@ -351,8 +344,8 @@ void ProgrammingContestManagementSystem::finalsCallSystem(const vector<Team>& te
 使用了无序映射（“unordered_map”）来存储目的地的信息和导航图的信息。首先，使用无序映射 “destinationInfo” 存储了各个目的地的编号和描述信息。键为目的地的编号，值为目的地的描述。然后，使用无序映射 “navigationGraph”存储了导航图的信息。它的键是起点的编号，值是另一个无序映射，其中键是终点的编号，值是一个二元组，包含了到达终点的距离和导航所需的时间。接下来，用户输入起点编号和终点编号，并进行判断是否有效。如果起点或终点的编号不存在于 “destinationInfo”中，则提示输入有效的起点和终点编号。然后，使用 Dijkstra 算法计算从起点到终点的最短路径。首先初始化距离和前驱节点的映射，并将所有节点标记为未访问。然后，循环遍历未访问的节点，选择距离最小的节点作为当前节点，并更新与其相邻节点的距离和前驱节点。直到找到终点或所有节点都被访问过。如果找不到最短路径（即终点的前驱节点为-1），则输出无法找到最短路径的信息。如果找到了最短路径，将路径存储在向量 `path` 中，并输出最短路径的编号序列。最后，输出最短路径的长度，并根据编号在 “destinationInfo”中查找并输出详细信息。实现了根据起点和终点之间的最短路径进行校园导游，并提供了路径长度和详细信息的输出。
 
 ## 5.3 算法实现
-//导航系统
-
+导航系统
+```
 void EventManagementSystem::campusGuide() {
 
     unordered_map<int, string> destinationInfo = {
@@ -417,10 +410,11 @@ void EventManagementSystem::campusGuide() {
     
     //查找并输出最短路径
 }
-
+```
 
 ## 6菜单设计
-{cout << "================================\n";        
+```
+cout << "================================\n";        
 cout << "=======       菜单      ========\n";       
 cout << "=======1. 管理参赛队伍信息========\n";        
 cout << "=======2. 读取参赛队伍信息========\n";        
@@ -428,11 +422,12 @@ cout << "=======3. 查询参赛队伍信息========\n";
 cout << "=======    4. 叫号系统   ========\n";        
 cout << "=======    5. 导航服务   ========\n";        
 cout << "=======      0. 退出    ========\n";        
-cout << "================================\n";}
+cout << "================================\n";
+```
 采用do-while循环操作菜单，采用switch语句对菜单进行选择。
 
 # 7类定义
-
+```
 class ProgrammingContestManagementSystem{
 public:    
       void deleteTeam(string teamNumber);    
@@ -456,8 +451,9 @@ public:
       void campusGuide();    
       int calculatePathLength(TeamNode* node, const string& teamNumber, int level);
 };
+```
 # 校园地图
 
-
-
-<div align=center><img src="https://github.com/QX7274/Programming-Contest-Management-System/blob/main/数据资料/江科大地图a.jpg" </div>
+<div align=center>
+<img src="https://github.com/QX7274/Programming-Contest-Management-System/blob/main/数据资料/江科大地图a.jpg" />
+</div>
