@@ -27,7 +27,7 @@
 
 // 参赛队伍结构体
 
-struct Team {
+‘struct Team {
 
     string teamNumber;
 
@@ -41,11 +41,11 @@ struct Team {
 
     string guideTeacher;
 
-};
+};’
 
 // 参赛队伍节点结构体
 
-struct TeamNode {
+‘struct TeamNode {
 
     Team team;
 
@@ -103,7 +103,7 @@ struct TeamNode {
 
        right = nullptr;
 
-    }
+    }’
 
 
 
@@ -114,7 +114,7 @@ struct TeamNode {
 
 ## 1.3 算法实现
 //添加队伍信息
-void ProgrammingContestManagementSystem::AddTeam()
+‘void ProgrammingContestManagementSystem::AddTeam()
 
 {
 
@@ -150,11 +150,11 @@ void ProgrammingContestManagementSystem::AddTeam()
 
     cout << "参赛队伍信息已添加。\n";
 
-}
+}’
 
 //删除参赛队伍信息
 
-void ProgrammingContestManagementSystem::DeleteTeam(string teamNumber)
+‘void ProgrammingContestManagementSystem::DeleteTeam(string teamNumber)
 
 {
 
@@ -174,18 +174,18 @@ void ProgrammingContestManagementSystem::DeleteTeam(string teamNumber)
     // 执行删除操作
 
 
-}
+}’
 
 
 
 
 # 2 参赛队伍的成绩查询（基于二叉排序树的查找）
-为参赛队伍分配一个分数为60~100之间的初赛成绩，从team.txt中读取参赛队伍的基本信息，实现基于二叉排序树的查找。根据提示输入参赛队编号，若查找成功，输出该赛事类别对应的基本信息（参赛作品名称、参赛学校、赛事类别、参赛者和初赛成绩信息）。另外，输出全部参赛队伍的平均查找长度ASL；否则，输出“查找失败！”。
+为参赛队伍分配一个分数为60 ~ 100之间的初赛成绩，从team.txt中读取参赛队伍的基本信息，实现基于二叉排序树的查找。根据提示输入参赛队编号，若查找成功，输出该赛事类别对应的基本信息（参赛作品名称、参赛学校、赛事类别、参赛者和初赛成绩信息）。另外，输出全部参赛队伍的平均查找长度ASL；否则，输出“查找失败！”。
 
 ## 2.1 问题分析
 使用二叉排序树（BST）来进行查找。具体实现过程如下：
 
-1、为参赛队伍分配60~100的随机初赛成绩，采用srand函数生成随机数，time函数生成随机数种子。
+1、为参赛队伍分配60 ~ 100的随机初赛成绩，采用srand函数生成随机数，time函数生成随机数种子。
 
 2、从数据文件 team.txt 中读取参赛队伍的基本信息，构建一个二叉排序树。
 
@@ -197,24 +197,24 @@ void ProgrammingContestManagementSystem::DeleteTeam(string teamNumber)
 
 ## 2.2 算法设计
 1、生成随机数。
-srand（（unsigned int）time（nullptr））;
-rand（）%100+60;
+‘srand（（unsigned int）time（nullptr））;
+rand（）%100+60;’
 
 1、采用字符串用于存储和处理队伍基本信息。
 
 //从输入流中读取一行文本，并将其存储到一个字符串变量中
 
-    string line;
+   ‘string line;’
 
 2、采用文件流用于读取txt文件。
 
-ifstream inFile("team.txt");//打开文件
+‘ifstream inFile("team.txt");//打开文件
 
-inFile.close();//关闭文件
+inFile.close();//关闭文件’
 
 3、采用二叉排序树来存储参赛队伍信息，根据参赛队伍编号（String类型）大小来构建二叉排序树，可以实现参赛队伍信息的添加、删除和修改。
 
-TeamNode* root;//二叉排序树根节点
+‘TeamNode* root;//二叉排序树根节点
 
 // 为当前行的信息用队伍编号创建一个新的队伍节点
 
@@ -238,13 +238,13 @@ TeamNode* root;//二叉排序树根节点
 
             insertNode(root, newNode);
 
-        }
+        }’
 
 ## 2.3 算法实现
 
 //将赛事信息从team.txt文件中读取出来并放入二叉排序树中
 
-void ProgrammingContestManagementSystem::LoadTeamsFromFile()
+‘void ProgrammingContestManagementSystem::LoadTeamsFromFile()
 
 {
 
@@ -281,7 +281,7 @@ void ProgrammingContestManagementSystem::SearchTeam()
 
     //找到要查询的节点
 
-}
+}’
 
 
 # 3 决赛分组，生成秩序册
@@ -296,7 +296,7 @@ void ProgrammingContestManagementSystem::SearchTeam()
 ## 3.3 算法实现
 //按学校查找队伍
 
-void ProgrammingContestManagementSystem::SearchTeamByUniversity(const string& university, const vector<Team>& teamInfos) {
+‘void ProgrammingContestManagementSystem::SearchTeamByUniversity(const string& university, const vector<Team>& teamInfos) {
 
     vector<Team> matchedTeams;
 
@@ -305,7 +305,7 @@ void ProgrammingContestManagementSystem::SearchTeamByUniversity(const string& un
     // 使用选择排序按参赛队编号排序
 
     // 输出排序后的参赛团队信息
-}
+}’
 
 
 # 4 决赛叫号模拟
@@ -319,12 +319,12 @@ void ProgrammingContestManagementSystem::SearchTeamByUniversity(const string& un
 3、采用队列实现
 
 ## 4.2 算法设计
-根据赛事类别将参赛队伍分配到不同的决赛室，并按照顺序叫号让队伍进入赛场进行比赛。函数接受一个参数 `teamInfos`，即存储参赛队伍信息的向量。首先，创建一个无序映射 `categoryMap`，用于按照赛事类别将参赛队伍分组。遍历 `teamInfos` 向量中的每个参赛队伍，将其加入到对应赛事类别的向量中。然后，创建一个向量 `categories`，用于存储赛事类别，并进行排序，以确保按照字母顺序输出。接下来，定义变量 `numFinalRooms` 表示决赛室的数量，并创建一个二维向量 `finalRooms`，用于存储每个决赛室中的参赛队伍。通过遍历排序后的赛事类别向量 `categories`，将对应赛事类别的参赛队伍按顺序分配到不同的决赛室中。使用 `roomIndex` 变量追踪当前的决赛室索引，并将参赛队伍依次添加到相应的决赛室中。当`roomIndex` 超过决赛室数量时，使用取余操作使其循环回到第一个决赛室。最后，使用循环遍历每个决赛室，并依次输出决赛室的编号。对于每个决赛室，遍历其中的参赛队伍，并输出参赛队编号，表示队伍进入赛场进行比赛。使用 `this_thread::sleep_for()` 函数模拟比赛进行，每次比赛结束前等待 0.5 秒。输出比赛结束提示，并输出空行以分隔不同的决赛室。实现了一个决赛叫号系统，将参赛队伍按照赛事类别分配到不同的决赛室，并模拟比赛叫号过程。
+根据赛事类别将参赛队伍分配到不同的决赛室，并按照顺序叫号让队伍进入赛场进行比赛。函数接受一个参数 “teamInfos”，即存储参赛队伍信息的向量。首先，创建一个无序映射 “categoryMap”，用于按照赛事类别将参赛队伍分组。遍历 “teamInfos” 向量中的每个参赛队伍，将其加入到对应赛事类别的向量中。然后，创建一个向量 “categories”，用于存储赛事类别，并进行排序，以确保按照字母顺序输出。接下来，定义变量 “numFinalRooms” 表示决赛室的数量，并创建一个二维向量 “finalRooms”，用于存储每个决赛室中的参赛队伍。通过遍历排序后的赛事类别向量 “categories”，将对应赛事类别的参赛队伍按顺序分配到不同的决赛室中。使用“roomIndex”变量追踪当前的决赛室索引，并将参赛队伍依次添加到相应的决赛室中。当“roomIndex”超过决赛室数量时，使用取余操作使其循环回到第一个决赛室。最后，使用循环遍历每个决赛室，并依次输出决赛室的编号。对于每个决赛室，遍历其中的参赛队伍，并输出参赛队编号，表示队伍进入赛场进行比赛。使用 “this_thread::sleep_for()”函数模拟比赛进行，每次比赛结束前等待 0.5 秒。输出比赛结束提示，并输出空行以分隔不同的决赛室。实现了一个决赛叫号系统，将参赛队伍按照赛事类别分配到不同的决赛室，并模拟比赛叫号过程。
 
 ## 4.3 算法实现
 // 决赛叫号系统
 
-void ProgrammingContestManagementSystem::finalsCallSystem(const vector<Team>& teamInfos) {
+‘void ProgrammingContestManagementSystem::finalsCallSystem(const vector<Team>& teamInfos) {
 
     // 按照赛事类别将参赛队伍分组
 
@@ -333,21 +333,21 @@ void ProgrammingContestManagementSystem::finalsCallSystem(const vector<Team>& te
     // 将参赛队伍按照顺序分配到决赛室
 
     // 模拟决赛叫号
-}
+}’
 
 
 # 5 校园导航
 为参赛者提供决赛主办地的各种路径导航的查询服务，以我校长山校区提供比赛场地为例，为参赛者提供不少于12个目标地的导航。为参赛者提供校园地图中任意目标地（建筑物）相关信息的查询；提供图中任意目标地（建筑物）的问路查询。需输出目的地（建筑物）名称、代号、简介等信息；最短路径的输出需包含途经地及最短路径值；并分析主要算法的时间复杂度。
 
 ## 5.1 问题分析
-使用了无序映射（`unordered_map`）来存储目的地的信息和导航图的信息。用户输入起点和终点，使用Dijkstra 算法找到最短路径并输出。
+使用了无序映射（“unordered_map”）来存储目的地的信息和导航图的信息。用户输入起点和终点，使用Dijkstra 算法找到最短路径并输出。
 
 ## 5.2 算法设计
-使用了无序映射（`unordered_map`）来存储目的地的信息和导航图的信息。首先，使用无序映射 `destinationInfo` 存储了各个目的地的编号和描述信息。键为目的地的编号，值为目的地的描述。然后，使用无序映射 `navigationGraph` 存储了导航图的信息。它的键是起点的编号，值是另一个无序映射，其中键是终点的编号，值是一个二元组，包含了到达终点的距离和导航所需的时间。接下来，用户输入起点编号和终点编号，并进行判断是否有效。如果起点或终点的编号不存在于 `destinationInfo` 中，则提示输入有效的起点和终点编号。然后，使用 Dijkstra 算法计算从起点到终点的最短路径。首先初始化距离和前驱节点的映射，并将所有节点标记为未访问。然后，循环遍历未访问的节点，选择距离最小的节点作为当前节点，并更新与其相邻节点的距离和前驱节点。直到找到终点或所有节点都被访问过。如果找不到最短路径（即终点的前驱节点为-1），则输出无法找到最短路径的信息。如果找到了最短路径，将路径存储在向量 `path` 中，并输出最短路径的编号序列。最后，输出最短路径的长度，并根据编号在 `destinationInfo` 中查找并输出详细信息。实现了根据起点和终点之间的最短路径进行校园导游，并提供了路径长度和详细信息的输出。
+使用了无序映射（“unordered_map”）来存储目的地的信息和导航图的信息。首先，使用无序映射 “destinationInfo” 存储了各个目的地的编号和描述信息。键为目的地的编号，值为目的地的描述。然后，使用无序映射 “navigationGraph”存储了导航图的信息。它的键是起点的编号，值是另一个无序映射，其中键是终点的编号，值是一个二元组，包含了到达终点的距离和导航所需的时间。接下来，用户输入起点编号和终点编号，并进行判断是否有效。如果起点或终点的编号不存在于 “destinationInfo”中，则提示输入有效的起点和终点编号。然后，使用 Dijkstra 算法计算从起点到终点的最短路径。首先初始化距离和前驱节点的映射，并将所有节点标记为未访问。然后，循环遍历未访问的节点，选择距离最小的节点作为当前节点，并更新与其相邻节点的距离和前驱节点。直到找到终点或所有节点都被访问过。如果找不到最短路径（即终点的前驱节点为-1），则输出无法找到最短路径的信息。如果找到了最短路径，将路径存储在向量 `path` 中，并输出最短路径的编号序列。最后，输出最短路径的长度，并根据编号在 “destinationInfo”中查找并输出详细信息。实现了根据起点和终点之间的最短路径进行校园导游，并提供了路径长度和详细信息的输出。
 
 ## 5.3 算法实现
 //导航系统
-void EventManagementSystem::campusGuide() {
+‘void EventManagementSystem::campusGuide() {
 
     unordered_map<int, string> destinationInfo = {
 
@@ -410,9 +410,9 @@ void EventManagementSystem::campusGuide() {
     //查找并输出路径
     
     //查找并输出最短路径
-}
+}’
 ## 6菜单设计
-cout << "================================\n";        
+‘cout << "================================\n";        
 cout << "=======       菜单      ========\n";       
 cout << "=======1. 管理参赛队伍信息========\n";        
 cout << "=======2. 读取参赛队伍信息========\n";        
@@ -420,10 +420,10 @@ cout << "=======3. 查询参赛队伍信息========\n";
 cout << "=======    4. 叫号系统   ========\n";        
 cout << "=======    5. 导航服务   ========\n";        
 cout << "=======      0. 退出    ========\n";        
-cout << "================================\n";
+cout << "================================\n";’
 采用do-while循环操作菜单，采用switch语句对菜单进行选择。
 # 7类定义
-class ProgrammingContestManagementSystem
+‘class ProgrammingContestManagementSystem
 {
 public:    
       void deleteTeam(string teamNumber);    
@@ -446,4 +446,5 @@ public:
       void addTeam();    
       void campusGuide();    
       int calculatePathLength(TeamNode* node, const string& teamNumber, int level);
-};
+};’
+！[image]（https://github.com/QX7274/Programming-Contest-Management-System/blob/main/数据资料/江科大地图a.jpg）
