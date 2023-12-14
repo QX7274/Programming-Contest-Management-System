@@ -222,7 +222,7 @@ TeamNode* root;//二叉排序树根节点
 
 // 为当前行的信息用队伍编号创建一个新的队伍节点
 
-        TeamNode* newNode = new TeamNode(teamNumber,projectName,university,eventCategory,participants,guideTeacher);
+        TeamNode* newNode = new TeamNode(teamNumber,projectName,university,eventCategory,participants,guideTeacher,scores);
 
         //如果根节点为空则当前节点就是根节点
 
