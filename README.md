@@ -31,17 +31,19 @@
 ```
 struct Team {
 
-    string teamNumber;
+    string teamNumber; //参赛队编号
 
-    string projectName;
+    string projectName;//参赛作品名称
 
-    string university;
+    string university;//参赛学校
 
-    string eventCategory;
+    string eventCategory;//赛事类别
 
-    string participants;
+    string participants;//参赛者
 
-    string guideTeacher;
+    string guideTeacher;//指导老师
+
+    int scores;//初赛成绩
 
 };
 ```
@@ -74,6 +76,8 @@ struct TeamNode {
 
        this->team.guideTeacher = team.guideTeacher;
 
+       this->team.scores = team.scores;
+
        left = nullptr;
 
        right = nullptr;
@@ -85,7 +89,7 @@ struct TeamNode {
 
 构造函数，接受队伍编号作为参数
 ```
-    TeamNode(const string& number, const string& projectName,const string& university, const string& eventCategory, const string& participants, const string& guideTeacher) {
+    TeamNode(const string& number, const string& projectName,const string& university, const string& eventCategory, const string& participants, const string& guideTeacher, const int& scores) {
 
        TeamNode* node = new TeamNode();
 
@@ -100,6 +104,8 @@ struct TeamNode {
        team.participants = participants;
 
        team.guideTeacher = guideTeacher;
+
+       team.scores = scores;
 
        left = nullptr;
 
