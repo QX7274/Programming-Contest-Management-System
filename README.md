@@ -198,14 +198,15 @@ void ProgrammingContestManagementSystem::DeleteTeam(string teamNumber)
 ## 2.2 算法设计
 1、生成随机数。
 ```
-srand((unsigned int)time(nullptr));
-rand()%100+60;
+    int scores;
+    srand(time(0));
+    scores=rand() %41+60;
 ```
 2、采用字符串用于存储和处理队伍基本信息。
 
 //从输入流中读取一行文本，并将其存储到一个字符串变量中
 ```
-string line;
+    string line;
 ```
 3、采用文件流用于读取txt文件。
 ```
