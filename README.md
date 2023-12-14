@@ -198,7 +198,6 @@ void ProgrammingContestManagementSystem::DeleteTeam(string teamNumber)
 ## 2.2 算法设计
 1、生成随机数。
 ```
-    int scores;
     srand(time(0));
     scores=rand() %41+60;
 ```
