@@ -195,19 +195,19 @@ void ProgrammingContestManagementSystem::DeleteTeam(string teamNumber)
 srand（（unsigned int）time（nullptr））;
 rand（）%100+60;
 ```
-1、采用字符串用于存储和处理队伍基本信息。
+2、采用字符串用于存储和处理队伍基本信息。
 
 //从输入流中读取一行文本，并将其存储到一个字符串变量中
 ```
 string line;
 ```
-2、采用文件流用于读取txt文件。
+3、采用文件流用于读取txt文件。
 ```
 ifstream inFile("team.txt");//打开文件
 
 inFile.close();//关闭文件
 ```
-3、采用二叉排序树来存储参赛队伍信息，根据参赛队伍编号（String类型）大小来构建二叉排序树，可以实现参赛队伍信息的添加、删除和修改。
+4、采用二叉排序树来存储参赛队伍信息，根据参赛队伍编号（String类型）大小来构建二叉排序树，可以实现参赛队伍信息的添加、删除和修改。
 
 ```
 TeamNode* root;//二叉排序树根节点
