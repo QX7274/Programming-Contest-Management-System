@@ -198,8 +198,8 @@ void ProgrammingContestManagementSystem::DeleteTeam(string teamNumber)
 ## 2.2 算法设计
 1、生成随机数。
 ```
-srand（（unsigned int）time（nullptr））;
-rand（）%100+60;
+srand((unsigned int)time(nullptr));
+rand()%100+60;
 ```
 2、采用字符串用于存储和处理队伍基本信息。
 
@@ -209,9 +209,10 @@ string line;
 ```
 3、采用文件流用于读取txt文件。
 ```
-ifstream inFile("team.txt");//打开文件
+    ifstream inFile;
+    inFile.open("C:\\Users\\QX\\CLionProjects\\EventManagementSystem\\cmake-build-debug\\team.txt",ios::in);//打开文件
 
-inFile.close();//关闭文件
+    inFile.close();//关闭文件
 ```
 4、采用二叉排序树来存储参赛队伍信息，根据参赛队伍编号（String类型）大小来构建二叉排序树，可以实现参赛队伍信息的添加、删除和修改。
 
