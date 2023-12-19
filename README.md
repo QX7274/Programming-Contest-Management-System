@@ -19,10 +19,10 @@
 （3）决赛地图导览：为参赛者提供决赛主办地的各种路径导航的查询服务，以我校长山校区提供比赛场地为例，为参赛者提供不少于12个目标地的导航。为参赛者提供校园地图中任意目标地（建筑物）相关信息的查询；提供图中任意目标地（建筑物）的问路查询。
 
 # 1  参赛队伍管理
-能够管理各参赛队的基本信息（包含参赛队编号，参赛作品名称，参赛学校，赛事类别，参赛者，指导老师）；能实现对参赛队伍的增加、修改和浏览。
+能够管理各参赛队的基本信息（包含参赛队编号，参赛作品名称，参赛学校，赛事类别，参赛者，指导老师）；能实现对参赛队伍的增加、修改、和浏览。
 
 ## 1.1 问题分析
-管理各参赛队的基本信息的前提是得先获得各个参赛队的信息，此时需要先进行读取，详细信息见读取信息模块。读取时已经将详细信息按照队伍编号大小存入了二叉排序树中，此时需要对得到的二叉排序树进行相关操作来进行增加、删除、修改的操作，在实现上述功能时，在对节点进行增加、删除、修改后，需要在txt文件中也进行相关操作，删除节点时应该保持二叉排序树的完好。
+管理各参赛队的基本信息的前提是得先获得各个参赛队的信息，此时需要先进行读取，详细信息见读取信息模块。读取时已经将详细信息按照队伍编号大小存入了二叉排序树中，此时需要对得到的二叉排序树进行相关操作来进行增加、修改的操作，在实现上述功能时，在对节点进行增加、修改后，需要在txt文件中也进行相关操作。参赛队伍的信息浏览在进行文件读取的时候直接输出即可。
 
 ## 1.2算法设计
 1、采用结构体定义参赛队伍的结构，包括参赛队编号、参赛作品名称、参赛学校、赛事类别、参赛者、指导教师等成员变量。定义二叉排序树的节点也需要采用结构体来定义。
@@ -30,150 +30,247 @@
 参赛队伍结构体
 ```
 struct Team {
-
-    string teamNumber; //参赛队编号
-
-    string projectName;//参赛作品名称
-
-    string university;//参赛学校
-
-    string eventCategory;//赛事类别
-
-    string participants;//参赛者
-
-    string guideTeacher;//指导老师
-
-    int scores;//初赛成绩
-
+    string teamNumber;
+    string projectName;
+    string university;
+    string eventCategory;
+    string participants;
+    string guideTeacher;
+    string scores;
+    int roomNumber;
+    TeamStatus status; // 添加队伍状态
 };
 ```
 
 参赛队伍节点结构体
 ```
 struct TeamNode {
-
     Team team;
-
     TeamNode* left;
-
     TeamNode* right;
 
-    int height = 1;
-
     TeamNode()
-
     {
-
-       this->team.teamNumber = team.teamNumber;
-
-       this->team.projectName = team.projectName;
-
-       this->team.eventCategory = team.eventCategory;
-
-       this->team.participants = team.participants;
-
-       this->team.university = team.university;
-
-       this->team.guideTeacher = team.guideTeacher;
-
-       this->team.scores = team.scores;
-
-       left = nullptr;
-
-       right = nullptr;
-
+        this->team.teamNumber = team.teamNumber;
+        this->team.projectName = team.projectName;
+        this->team.eventCategory = team.eventCategory;
+        this->team.participants = team.participants;
+        this->team.university = team.university;
+        this->team.guideTeacher = team.guideTeacher;
+        this->team.scores = team.scores;
+        this->team.status = team.status;
+        this->team.roomNumber = team.roomNumber;
+        left = nullptr;
+        right = nullptr;
     }
-```
-   
 
-
-构造函数，接受队伍编号作为参数
-```
-    TeamNode(const string& number, const string& projectName,const string& university, const string& eventCategory, const string& participants, const string& guideTeacher, const int& scores) {
-
-       TeamNode* node = new TeamNode();
-
-       team.teamNumber = number;
-
-       team.projectName = projectName;
-
-       team.university = university;
-
-       team.eventCategory = eventCategory;
-
-       team.participants = participants;
-
-       team.guideTeacher = guideTeacher;
-
-       team.scores = scores;
-
-       left = nullptr;
-
-       right = nullptr;
-
+    // 构造函数，接受队伍编号作为参数
+    TeamNode(const string& number, const string& projectName, const string& university, const string& eventCategory, const string& participants, const string& guideTeacher,
+             const string& scores) {
+        TeamNode* node = new TeamNode();
+        team.teamNumber = number;
+        team.projectName = projectName;
+        team.university = university;
+        team.eventCategory = eventCategory;
+        team.participants = participants;
+        team.guideTeacher = guideTeacher;
+        team.scores = scores;
+        left = nullptr;
+        right = nullptr;
     }
+};
 ```
 
 
-2、在对节点进行相关操作时，应该注意二叉树的平衡，适当做出调整。
-
-
-
+2、增加队伍时应注意重复添加的判定，输入已存在的队伍编号则给出提示并重新输入。
+```
+if(teamNumber1==teamNumber)
+        {
+            cout<<"该队伍已存在,请重新输入："<<endl;
+            AddTeam();
+        }
+```
+3、浏览选项放在主菜单，增加和修改选项放在管理菜单，用do-while循环和switch语句实现菜单功能。
+4、读取文件时生成随机数，并放入二叉排序树和新的文件里。
+5、注意初赛成绩存入时与文件格式保持一致，即数据前面加上“#”号，且在第一行末尾加上“初赛成绩”。
+6、浏览队伍的实现：在读取文件，生成初赛成绩和建立二叉排序树时直接输出，不用另外调用函数。
 ## 1.3 算法实现
+浏览队伍信息
+```
+    ifstream inFile;
+    inFile.open("new-team.txt",ios::in);//打开文件
+    if (!inFile.is_open()) {
+        cout << "无法打开文件 \n";
+        return;
+    }
+
+    getline(inFile, line); // 读取文件中的标题行，忽略
+
+    while (getline(inFile, line)) {
+
+
+        // 使用 stringstream 进行分割
+        stringstream ss(line);
+        string temp;
+
+        string teamNumber;
+        getline(ss, teamNumber, '\t');
+        ss.ignore();
+
+        getline(ss, temp, '\t'); // 跳过参赛作品名称的 #
+        string projectName;
+        getline(ss, projectName, '\t');
+        ss.ignore();
+
+        getline(ss, temp, '\t'); // 跳过参赛学校的 #
+        string university;
+        getline(ss, university, '\t');
+        ss.ignore();
+
+        getline(ss, temp, '\t'); // 跳过赛事类别的 #
+        string eventCategory;
+        getline(ss, eventCategory, '\t');
+        ss.ignore();
+
+        getline(ss, temp, '\t'); // 跳过参赛者的 #
+        string participants;
+        getline(ss, participants, '\t');
+        ss.ignore();
+
+        getline(ss, temp, '\t'); // 跳过指导教师的 #
+        string guideTeacher;
+        getline(ss, guideTeacher,'\t');
+
+        getline(ss, temp, '\t'); // 跳过参赛者的 #
+        string scores;
+        getline(ss, scores, '\t');
+        ss.ignore();
+
+        // 输出格式化的信息
+        cout << "参赛队伍编号: " << teamNumber << endl;
+        cout << "参赛作品名称: " << projectName << endl;
+        cout << "参赛学校: " << university << endl;
+        cout << "赛事类别: " << eventCategory << endl;
+        cout << "参赛者: " << participants << endl;
+        cout << "指导教师: " << guideTeacher << endl;
+        cout << "初赛成绩: " << scores << endl;
+```
 添加队伍信息
 ```
-void ProgrammingContestManagementSystem::AddTeam()
+void EventManagementSystem::AddTeam()
 {
-
     //首先创建新节点，以便存放需要添加的队伍信息
-
     TeamNode* newNode = new TeamNode;
 
-    // 从用户输入获取参赛队伍信息;
+    string teamNumber1;
+    // 从用户输入获取参赛队伍信息
+    cout << "请输入参赛队伍编号：";
+    cin.ignore(); // 忽略之前的换行符
+    cin>>teamNumber1;
+    string line;
+    ifstream inFile;
+    inFile.open("new-team.txt",ios::in);//打开文件
+    if (!inFile.is_open()) {
+        cout << "无法打开文件 \n";
+        return;
+    }
 
+    getline(inFile, line); // 读取文件中的标题行，忽略
+
+    while (getline(inFile, line)) {
+        // 使用 stringstream 进行分割
+        stringstream ss(line);
+        string temp;
+
+        string teamNumber;
+        getline(ss, teamNumber, '\t');
+        ss.ignore();
+
+        if(teamNumber1==teamNumber)
+        {
+            cout<<"该队伍已存在,请重新输入："<<endl;
+            AddTeam();
+        }
+        else
+            newNode->team.teamNumber=teamNumber1;
+    }
+    cin.ignore(); // 忽略之前的换行符
+    cout << "请输入参赛作品名称：";
+    getline(cin, newNode->team.projectName);
+    cout << "请输入参赛学校：";
+    getline(cin, newNode->team.university);
+    cout << "请输入赛事类别：";
+    getline(cin, newNode->team.eventCategory);
+    cout<<endl;
+    cout << "请输入参赛者：";
+    getline(cin, newNode->team.participants);
+    cout << "请输入指导教师：";
+    getline(cin, newNode->team.guideTeacher);
+    cout << "请输入初赛成绩：";
+    getline(cin, newNode->team.scores);
     //在txt文件中修改
-   
+    ofstream mycout("new-team.txt", ios::app);
+    mycout << newNode->team.teamNumber << "	#	" << newNode->team.projectName << "	#	"  << newNode->team.university << "	#	" << newNode->team.eventCategory << "	#	" << newNode->team.participants <<  "	#	" << newNode->team.guideTeacher<<"	  #	   " << newNode->team.scores << endl;
+    mycout.close();
+
 
     //相关信息录入完成，将当前节点的左右子树分别赋为空
-
     newNode->left = nullptr;
-
     newNode->right = nullptr;
 
     // 插入节点到二叉排序树
-
     //如果根节点为空，则当前节点就是根节点
-
     if (root == nullptr) {
-
         root = newNode;
-
     }
-
-    //否则将当前节点插入二叉排序树中
-
-
+        //否则将当前节点插入二叉排序树中
+    else {
+        InsertNode(root, newNode);
+    }
     //给出添加成功的提示
 
-    cout << "参赛队伍信息已添加。\n";
-
+    cout << "参赛队伍信息已添加。"<<endl;
 }
 ```
 
-删除参赛队伍信息
+修改参赛队伍信息
 ```
-void ProgrammingContestManagementSystem::DeleteTeam(string teamNumber)
+void EventManagementSystem::ModifyTeam()
 {
+    if (root == nullptr) {
+        cout << "当前无参赛队伍信息。\n";
+        return;
+    }
 
-    //如果根节点为空，说明本来就没有参赛队伍信息，无法进行删除 
+    string teamNumber;
+    cout << "请输入要修改的参赛队伍编号：";
+    cin >> teamNumber;
 
-    // 查找要删除的节点，将查找到的节点赋值给一个新的节点targetNode
+    TeamNode* target = SearchNode(root, teamNumber);
+    if (target == nullptr) {
+        cout << "未找到对应的参赛队伍信息。\n";
+        return;
+    }
 
-    //如果找不到要删除的节点，给出提示
+    // 根据需要，修改参赛队伍的字段信息
+    cout << "请输入新的参赛作品名称：";
+    cin.ignore();
+    getline(cin, target->team.projectName);
+    cout << "请输入新的参赛学校：";
+    getline(cin, target->team.university);
+    cout << "请输入新的赛事类别：";
+    getline(cin, target->team.eventCategory);
+    cout<<endl;
+    cout << "请输入新的参赛者：";
+    getline(cin, target->team.participants);
+    cout << "请输入新的指导教师：";
+    getline(cin, target->team.guideTeacher);
+    cout << "请输入新的初赛成绩：";
+    getline(cin, target->team.scores);
 
-    //找到要删除的节点
-
-    // 执行删除操作
+    UpdateInFile(teamNumber, target->team);
+    // 输出修改成功的提示信息
+    cout << "参赛队伍信息已修改并保存到文件中。\n";
 }
 ```
 
@@ -183,7 +280,6 @@ void ProgrammingContestManagementSystem::DeleteTeam(string teamNumber)
 为参赛队伍分配一个分数为60 ~ 100之间的初赛成绩，从team.txt中读取参赛队伍的基本信息，实现基于二叉排序树的查找。根据提示输入参赛队编号，若查找成功，输出该赛事类别对应的基本信息（参赛作品名称、参赛学校、赛事类别、参赛者和初赛成绩信息）。另外，输出全部参赛队伍的平均查找长度ASL；否则，输出“查找失败！”。
 
 ## 2.1 问题分析
-使用二叉排序树（BST）来进行查找。具体实现过程如下：
 
 1、为参赛队伍分配60 ~ 100的随机初赛成绩，采用srand函数生成随机数，time函数生成随机数种子。
 
@@ -191,7 +287,7 @@ void ProgrammingContestManagementSystem::DeleteTeam(string teamNumber)
 
 3、读取用户输入的参赛队伍编号，将其作为关键字进行查找。
 
-4、在二叉排序树中查找该关键字，如果查找成功，则输出该赛事类别对应的基本信息（参赛作品名称、参赛学校、赛事类别、参赛者和指导老师信息），并计算平均查找长度 ASL；否则，输出“查找失败！”。
+4、在二叉排序树中查找该关键字，如果查找成功，则输出该赛事类别对应的基本信息（参赛队伍编号，参赛作品名称，参赛学校，赛事类别，参赛者，指导教师，初赛成绩），并计算输出所有队伍平均查找长度 ASL，若查找失败则给出提示。
 
 5、重复步骤2-3，直到所有参赛队伍的基本信息都被查找完毕。
 
@@ -199,94 +295,210 @@ void ProgrammingContestManagementSystem::DeleteTeam(string teamNumber)
 1、生成随机数。
 ```
     srand(time(0));
-    scores=rand() %41+60;
+    int scores=rand() %41+60;
 ```
-2、采用字符串用于存储和处理队伍基本信息。
-
-//从输入流中读取一行文本，并将其存储到一个字符串变量中
-```
-    string line;
-```
-3、采用文件流用于读取txt文件。
-```
-    ifstream inFile;
-    inFile.open("C:\\Users\\QX\\CLionProjects\\EventManagementSystem\\cmake-build-debug\\team.txt",ios::in);//打开文件
-
-    inFile.close();//关闭文件
-```
-4、采用二叉排序树来存储参赛队伍信息，根据参赛队伍编号（String类型）大小来构建二叉排序树，可以实现参赛队伍信息的添加、删除和修改。
-
-```
-TeamNode* root;//二叉排序树根节点
-
-// 为当前行的信息用队伍编号创建一个新的队伍节点
-
-        TeamNode* newNode = new TeamNode(teamNumber,projectName,university,eventCategory,participants,guideTeacher,scores);
-
-        //如果根节点为空则当前节点就是根节点
-
-        if (root == nullptr)
-
-        {
-
-            root = newNode;
-
-        }
-
-        //如果根节点不空，则将创建的新节点插入到二叉排序树中
-
-        else
-
-        {
-
-            insertNode(root, newNode);
-
-        }
-```
+2、文件读取和存储，构造二叉排序树。
+3、遍历文件里的队伍，分别计算ASL并输出
 
 ## 2.3 算法实现
 
 将赛事信息从team.txt文件中读取出来并放入二叉排序树中
 ```
-void ProgrammingContestManagementSystem::LoadTeamsFromFile()
-
+void EventManagementSystem::LoadTeamsFromFile()         //读取文件
 {
+    ifstream inputFile("team.txt");   // 打开输入文件
+    ofstream outputFile("new-team.txt"); // 创建输出文件
 
-    //打开文件
+    string line;
 
-    //从输入流中读取一行文本，并将其存储到一个字符串变量中
-    //输出格式化的信息
-    
-    //为当前行的信息用队伍编号创建一个新的队伍节点
-    
+    srand(time(0)); // 设置随机种子
+    if (inputFile.is_open() && outputFile.is_open()) {
+        getline(inputFile,line);
+        line+="  #   初赛成绩";
+        outputFile << line << endl; // 写入到输出文件
+        //存入随机数
+        while (getline(inputFile, line)) {
+            int scores = rand() % 41 + 60;  // 生成60到100之间的随机数
+            line += "\t#\t" + to_string(scores); // 在行末尾添加随机数
+            outputFile << line << endl; // 写入到输出文件
+        }
+
+        inputFile.close();   // 关闭输入文件
+        outputFile.close();  // 关闭输出文件
+
+        cout << "处理完成！" << endl;
+    } else {
+        cout << "无法打开文件！" << endl;
+    }
+    ifstream inFile;
+    inFile.open("new-team.txt",ios::in);//打开文件
+    if (!inFile.is_open()) {
+        cout << "无法打开文件 \n";
+        return;
+    }
+
+    getline(inFile, line); // 读取文件中的标题行，忽略
+
+    while (getline(inFile, line)) {
+
+
+        // 使用 stringstream 进行分割
+        stringstream ss(line);
+        string temp;
+
+        string teamNumber;
+        getline(ss, teamNumber, '\t');
+        ss.ignore();
+
+        getline(ss, temp, '\t'); // 跳过参赛作品名称的 #
+        string projectName;
+        getline(ss, projectName, '\t');
+        ss.ignore();
+
+        getline(ss, temp, '\t'); // 跳过参赛学校的 #
+        string university;
+        getline(ss, university, '\t');
+        ss.ignore();
+
+        getline(ss, temp, '\t'); // 跳过赛事类别的 #
+        string eventCategory;
+        getline(ss, eventCategory, '\t');
+        ss.ignore();
+
+        getline(ss, temp, '\t'); // 跳过参赛者的 #
+        string participants;
+        getline(ss, participants, '\t');
+        ss.ignore();
+
+
+        getline(ss, temp, '\t'); // 跳过指导教师的 #
+        string guideTeacher;
+        getline(ss, guideTeacher,'\t');
+
+
+        getline(ss, temp, '\t'); // 跳过参赛者的 #
+        string scores;
+        getline(ss, scores, '\t');
+        ss.ignore();
+
+
+        // 输出格式化的信息
+        cout << "参赛队伍编号: " << teamNumber << endl;
+        cout << "参赛作品名称: " << projectName << endl;
+        cout << "参赛学校: " << university << endl;
+        cout << "赛事类别: " << eventCategory << endl;
+        cout << "参赛者: " << participants << endl;
+        cout << "指导教师: " << guideTeacher << endl;
+        cout << "初赛成绩: " << scores << endl;
+
+        // 为当前行的信息用队伍编号创建一个新的队伍节点
+        TeamNode* newNode = new TeamNode(teamNumber,projectName,university,eventCategory,participants,guideTeacher,scores);
         //如果根节点为空则当前节点就是根节点
-
-        //如果根节点不空，则将创建的新节点插入到二叉排序树中
-
+        if (root == nullptr)
+        {
+            root = newNode;
+        }
+            //如果根节点不空，则将创建的新节点插入到二叉排序树中
+        else
+        {
+            InsertNode(root, newNode);
+        }
+        cout << endl;
+    }
     //读取完毕，关闭文件
+    inFile.close();
+    cout << "数据输出完毕\n";
+    cout<<endl;
 }
 ```
 
 按编号查找队伍并输出ASL
 ```
-void ProgrammingContestManagementSystem::SearchTeam()
-
+void EventManagementSystem::SearchTeam()
 {
-
+    int totalPathLength = 0;
+    int nodeCount = 0;
     //如果根节点为空，说明本来就没有参赛队伍信息，无法进行查询
+    if (root == nullptr) {
+        cout << "当前无参赛队伍信息。\n";
+        return;
+    }
 
-    //查找要查询的节点，将查找到的节点赋值给一个新的节点targetNode
+    string teamNumber;
+    cout << "请输入要查询的参赛队伍编号："<<endl;
+    cin >> teamNumber;
 
-    TeamNode* targetNode = searchNode(root, teamNumber);
-
+    // 查找要查询的节点，将查找到的节点赋值给一个新的节点targetNode
+    TeamNode* targetNode = SearchNode(root, teamNumber);
     //如果找不到要查询的节点，给出提示
-
-    //查找要查询的节点并计算路径长度
+    if (targetNode == nullptr) {
+        cout << "未找到对应的参赛队伍信息。\n";
+        SearchTeam();
+        return ;
+    }
 
     //找到要查询的节点
+    cout << "参赛队伍编号: " << targetNode->team.teamNumber << endl;
+    cout << "参赛作品名称: " << targetNode->team.projectName << endl;
+    cout <<"参赛学校: " << targetNode->team.university << endl;
+    cout << "赛事类别: "<<targetNode->team.eventCategory << endl;
+    cout << "参赛者: "<<targetNode->team.participants << endl;
+    cout << "指导教师: " <<targetNode->team.guideTeacher << endl;
+    cout << "初赛成绩: " <<targetNode->team.scores << endl;
+    cout << "所有参赛队的平均查找长度如下："<<endl;
+    string line;
+    ifstream inFile;
+    inFile.open("new-team.txt",ios::in);//打开文件
+    if (!inFile.is_open()) {
+        cout << "无法打开文件 \n";
+        return;
+    }
+
+    getline(inFile, line); // 读取文件中的标题行，忽略
+
+    while (getline(inFile, line)) {
+        // 使用 stringstream 进行分割
+        stringstream ss(line);
+        string temp;
+
+        string teamNumber;
+        getline(ss, teamNumber, '\t');
+        ss.ignore();
+
+        // 查找要查询的节点并计算路径长度
+        int pathLength = CalculatePathLength(root, teamNumber, 1);
+        if (pathLength == 0) {
+            cout << "未找到对应的参赛队伍信息。\n";
+            return;
+        }
+
+        totalPathLength += pathLength;
+        nodeCount++;
+
+        double asl = static_cast<double>(totalPathLength) / nodeCount;
+        cout << "队伍"<<teamNumber<<"的平均查找长度ASL：" << asl << endl;
+    }
+
 }
 ```
-
+查找待查队伍在二叉树中的节点
+```
+TeamNode* EventManagementSystem::SearchNode(TeamNode* current, const string& teamNumber)//需要当前节点和要查找的队伍编号信息
+{
+    //如果当前节点为空或者当前节点的队伍编号等于需要查找的队伍编号，则返回当前节点
+    if (current == nullptr || current->team.teamNumber.compare(teamNumber) == 0) {
+        return current;
+    }
+    //需要查找的节点编号比当前节点编号小，则去当前节点的左子树中继续寻找
+    if (teamNumber.compare(current->team.teamNumber) < 0) {
+        return SearchNode(current->left, teamNumber);
+    }
+        //需要查找的节点编号比当前节点编号大，则去当前节点的右子树中继续寻找
+    else {
+        return SearchNode(current->right, teamNumber);
+    }
+}
+```
 # 3 决赛分组，生成秩序册
 根据赛事类别将参赛队伍分配到17个决赛室（编号为1~17）。秩序册中每个决赛室的进场顺序为初赛成绩降序排列。（排序算法从选择排序、插入排序、希尔排序、归并排序、堆排序中选择一种，并为选择该算法的原因做出说明）。
 
