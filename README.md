@@ -9,7 +9,7 @@
 
 
 
-**【任务描述】**
+【任务描述】
 设计一款赛事管理系统，实现赛务相关的数据管理及信息服务，该系统能够为省级赛事管理解决以下问题：
 
 （1）赛事信息管理：从team.txt中读取参赛队伍的基本信息，设计合适的数据结构存储，能实现对参赛队伍的增加、修改和浏览。为参赛队伍分配一个分数为60 ~ 100之间的初赛成绩，并能实现参赛队伍的成绩查询（实现基于二叉排序树的查找）。设计合适的输入输出，根据提示输入参赛队编号，查询队伍的初赛成绩，若查找成功，输出该赛事类别对应的基本信息（参赛作品名称、参赛学校、赛事类别、参赛者和初赛成绩信息）。另外，输出全部参赛队的平均查找长度ASL。
@@ -273,7 +273,52 @@ void EventManagementSystem::ModifyTeam()
     cout << "参赛队伍信息已修改并保存到文件中。\n";
 }
 ```
+在文本文件中修改参赛队伍信息
+```
+void EventManagementSystem::UpdateInFile(string teamNumber, const Team& updatedInfo) {
+    ifstream inputFile;
+    inputFile.open("new-team.txt",ios::in);
+    if (!inputFile.is_open()) {
+        cout << "无法打开文档" << endl;
+        return;
+    }
 
+    ofstream outputFile("temp.txt");
+    if (!outputFile.is_open()) {
+        cout << "无法创建临时文件" << endl;
+        inputFile.close();
+        return;
+    }
+    TeamNode* node = SearchNode(root, teamNumber);
+    string line;
+    while (getline(inputFile, line)) {
+        stringstream ss(line);
+        string currentTeamNumber;
+        ss >> currentTeamNumber;
+        if (currentTeamNumber.compare(teamNumber) == 0) {
+            // 找到要修改的队伍信息，将新的信息写入临时文件
+            outputFile << teamNumber << "	#	" << updatedInfo.projectName << "	#	" << updatedInfo.university << "	#	" << updatedInfo.eventCategory << "	#	" << updatedInfo.participants << "	#	" << updatedInfo.guideTeacher << "	#	" << updatedInfo.scores << endl;
+        }
+        else {
+            // 将原始行写入临时文件
+            outputFile << line << endl;
+        }
+    }
+
+    inputFile.close();
+    outputFile.close();
+
+    if (SearchNode(root, teamNumber) != nullptr) {
+        remove("new-team.txt");       // 删除原始的队伍信息文件
+        rename("temp.txt", "new-team.txt");  // 将临时文件重命名为原始的队伍信息文件
+
+    }
+    else {
+        remove("temp.txt");  // 删除临时文件
+        cout << "未找到指定的队伍信息，无法修改。" << endl;
+    }
+}
+```
 
 
 # 2 参赛队伍的成绩查询（基于二叉排序树的查找）
@@ -503,23 +548,65 @@ TeamNode* EventManagementSystem::SearchNode(TeamNode* current, const string& tea
 根据赛事类别将参赛队伍分配到17个决赛室（编号为1~17）。秩序册中每个决赛室的进场顺序为初赛成绩降序排列。（排序算法从选择排序、插入排序、希尔排序、归并排序、堆排序中选择一种，并为选择该算法的原因做出说明）。
 
 ## 3.1 问题分析
-从数据文件中读取参赛队伍的基本信息，包括参赛队伍编号、参赛作品名称、参赛学校、赛事类别、参赛者和指导老师信息等。提示用户输入参赛学校名称或赛事类别，并进行输入验证和错误提示。根据用户输入的参赛学校名称或赛事类别，在数据文件中查找相应的参赛团队。将查找到的参赛团队按赛事类别进行排序，并输出排序后的参赛团队的基本信息。
+从数据文件中读取参赛队伍的基本信息，包括决赛室号、参赛队伍编号、参赛作品名称、参赛学校、赛事类别、参赛者和指导老师信息。生成随机数作为初赛成绩并加入到文件里。在每个决赛室按照初赛成绩降序排序。
 
 ## 3.2 算法设计
-采用选择排序算法进行排序，每次从待排序的元素中选择最小（或最大）的元素，将其与未排序部分的第一个元素交换位置，直到所有元素都排序完成。选择排序的时间复杂度是O(n^2)，其中n是参赛队伍的数量，每个学校的参赛团队数量较小，选择排序的性能足够满足需求，并且实现简单。
-
+1、采用选择排序算法进行排序，每次从待排序的元素中选择最小（或最大）的元素，将其与未排序部分的第一个元素交换位置，直到所有元素都排序完成。选择排序的时间复杂度是O(n^2)，其中n是参赛队伍的数量，每个学校的参赛团队数量较小，选择排序的性能足够满足需求，并且实现简单。
+2、将分好组的xlsx文件复制到新的txt文件中，打开txt文件后写入随机生成的初赛成绩并保存到新的txt文件。
+3、保存信息到容器中
 ## 3.3 算法实现
-按学校查找队伍
+生成初赛成绩添加到final-tean1.txt文件里
 ```
-void ProgrammingContestManagementSystem::SearchTeamByUniversity(const string& university, const vector<Team>& teamInfos) {
+void EventManagementSystem::simulateTeamStatusDisplay()  {
 
-    vector<Team> matchedTeams;
+    ifstream inputFile("final-team.txt");   // 打开输入文件
+    ofstream outputFile("final-team1.txt"); // 创建输出文件
 
-    // 遍历参赛队伍，找到匹配的队伍信息
-    
-    // 使用选择排序按参赛队编号排序
+    string line;
 
-    // 输出排序后的参赛团队信息
+    srand(time(0)); // 设置随机种子
+    if (inputFile.is_open() && outputFile.is_open()) {
+        getline(inputFile,line);
+        line+="      初赛成绩";
+        outputFile << line << endl; // 写入到输出文件
+        //存入随机数
+        while (getline(inputFile, line)) {
+            int scores = rand() % 41 + 60;  // 生成60到100之间的随机数
+            line += "\t\t\t"+ to_string(scores); // 在行末尾添加随机数
+            outputFile << line << endl; // 写入到输出文件
+        }
+
+        inputFile.close();   // 关闭输入文件
+        outputFile.close();  // 关闭输出文件
+
+        cout << "处理完成！" << endl;
+    } else {
+        cout << "无法打开文件！" << endl;
+    }
+    ifstream file("final-team1.txt");
+    if (!file.is_open()) {
+        cerr << "无法打开文件" << endl;
+    }
+    simulateCompetition(file);
+    file.close();
+}
+```
+选择排序
+```
+void EventManagementSystem::selectionSort(vector<Team> &data)
+{
+    int n = data.size();
+    for (int i = 0; i < n - 1; i++) {
+        int minIndex = i;
+        for (int j = i + 1; j < n; j++) {
+            if (stoi(data[j].scores) > stoi(data[minIndex].scores)) {
+                minIndex = j;
+            }
+        }
+        if (minIndex != i) {
+            swap(data[i], data[minIndex]);
+        }
+    }
 }
 ```
 
@@ -527,27 +614,101 @@ void ProgrammingContestManagementSystem::SearchTeamByUniversity(const string& un
 所有参赛队按赛事组织文件中的赛事类别分到17个决赛室，比赛现场会设置大型候赛区，场地中有大屏以时间线动态展示各决赛室中正在决赛的队伍，侯赛的队伍及比赛结束的队伍信息。请编写程序模拟候赛区大屏上动态展示各参赛队候场、比赛中、比赛结束的状态。 
 
 ## 4.1 问题分析
-1、所有参赛队按赛事组织文件中的赛事类别分到17个决赛室，每个决赛室容纳的参赛队数量相同。
-
-2、决赛室按顺序叫号，被叫号参赛队进场，比赛结束后，下一参赛队才能进赛场。
-
-3、采用队列实现。
-
+1、所有参赛队按赛事组织文件中的赛事类别分到17个决赛室，每个决赛室队伍个数不一。
+2、展示三个状态。
+3、采用vector容器存储队伍。
+4、每轮结束后更改每支队伍状态。
+5、展示当前时间并在每轮结束后更新时间。
 ## 4.2 算法设计
-根据赛事类别将参赛队伍分配到不同的决赛室，并按照顺序叫号让队伍进入赛场进行比赛。函数接受一个参数 “teamInfos”，即存储参赛队伍信息的向量。首先，创建一个无序映射 “categoryMap”，用于按照赛事类别将参赛队伍分组。遍历 “teamInfos” 向量中的每个参赛队伍，将其加入到对应赛事类别的向量中。然后，创建一个向量 “categories”，用于存储赛事类别，并进行排序，以确保按照字母顺序输出。接下来，定义变量 “numFinalRooms” 表示决赛室的数量，并创建一个二维向量 “finalRooms”，用于存储每个决赛室中的参赛队伍。通过遍历排序后的赛事类别向量 “categories”，将对应赛事类别的参赛队伍按顺序分配到不同的决赛室中。使用“roomIndex”变量追踪当前的决赛室索引，并将参赛队伍依次添加到相应的决赛室中。当“roomIndex”超过决赛室数量时，使用取余操作使其循环回到第一个决赛室。最后，使用循环遍历每个决赛室，并依次输出决赛室的编号。对于每个决赛室，遍历其中的参赛队伍，并输出参赛队编号，表示队伍进入赛场进行比赛。使用 “this_thread::sleep_for()”函数模拟比赛进行，每次比赛结束前等待 0.5 秒。输出比赛结束提示，并输出空行以分隔不同的决赛室。实现了一个决赛叫号系统，将参赛队伍按照赛事类别分配到不同的决赛室，并模拟比赛叫号过程。
-
+1、运用enum枚举三种状态。
+2、读取文件信息后进行排序，然后获取当前时间，在while循环里更新队伍状态并打印输出。
+3、设置函数判断所有队伍的状态是否都是比赛结束，若是则退出循环。
 ## 4.3 算法实现
-决赛叫号系统
+读取文件和修改状态并调用输出函数
 ```
-void ProgrammingContestManagementSystem::FinalsCallSystem(const vector<Team>& teamInfos) {
+void EventManagementSystem::simulateCompetition(ifstream& file) {
+    // 修改队列为向量，以保持队伍状态
+    vector<vector<Team>> rooms(17);
+    string line;
+    getline(file,line);
+    // 读取和解析文件
+    while (getline(file, line)) {
+        istringstream iss(line);
+        Team team;
+        team.status = Waiting;
+        iss >> team.roomNumber >> team.teamNumber >> team.projectName >> team.university
+            >> team.eventCategory >> team.participants >> team.guideTeacher >> team.scores;
+        team.roomNumber--; // 使决赛室编号从0开始
+        rooms[team.roomNumber].push_back(team);
 
-    // 按照赛事类别将参赛队伍分组
+        // 输出格式化的信息
+        //cout << "参赛队伍编号: " << team.teamNumber << "       初赛成绩: " << team.scores << endl;
+    }
 
-    // 按照赛事类别进行排序
+    // 为每个决赛室队伍排序
+    for (auto& room : rooms) {
+        selectionSort(room);
+    }
 
-    // 将参赛队伍按照顺序分配到决赛室
 
-    // 模拟决赛叫号
+    // 获取当前时间
+    time_t currentTime = time(nullptr);
+    printCurrentStatus(rooms, currentTime);
+
+    while (!isCompetitionFinished(rooms)) {
+        //this_thread::sleep_for(chrono::milliseconds(500)); // 模拟0.5秒
+        currentTime += 5 * 60; // 增加5分钟
+
+        // 更新队伍状态
+        for (auto& room : rooms) {
+            for (auto& team : room) {
+                if (team.status == Waiting) {
+                    team.status = Playing;
+                    break;
+                } else if (team.status == Playing) {
+                    team.status = Finished;
+                    break;
+                }
+            }
+        }
+
+        printCurrentStatus(rooms, currentTime);
+    }
+}
+```
+返回队伍状态
+```
+string EventManagementSystem::statusToString(TeamStatus status) {
+    switch (status) {
+        case Waiting: return "候场";
+        case Playing: return "比赛中";
+        case Finished: return "比赛结束";
+        default: return "未知状态";
+    }
+}
+```
+打印输出
+```
+void EventManagementSystem::printCurrentStatus(const vector<vector<Team>>& rooms, const time_t& currentTime) {
+    struct tm* localTime = localtime(&currentTime);
+    cout << "=====================" << put_time(localTime, "%Y-%m-%d %H:%M:%S") << "=====================" << endl;
+    for (size_t i = 0; i < rooms.size(); ++i) {
+        cout << "决赛室" << i + 1 << ":" << endl;
+        for (const auto& team : rooms[i]) {
+            cout << "队伍编号:" << team.teamNumber <<"    初赛成绩："<<team.scores << "    状态:" << statusToString(team.status) << endl;
+        }
+        cout << "==========" << endl;
+    }
+}
+```
+判断是否所有队伍都已完成比赛
+```
+bool EventManagementSystem::isCompetitionFinished(const vector<vector<Team>>& rooms) {
+    return all_of(rooms.begin(), rooms.end(), [](const vector<Team>& room) {
+        return all_of(room.begin(), room.end(), [](const Team& team) {
+            return team.status == Finished;
+        });
+    });
 }
 ```
 
@@ -558,77 +719,146 @@ void ProgrammingContestManagementSystem::FinalsCallSystem(const vector<Team>& te
 使用了无序映射（“unordered_map”）来存储目的地的信息和导航图的信息。用户输入起点和终点，使用Dijkstra 算法找到最短路径并输出。
 
 ## 5.2 算法设计
-使用了无序映射（“unordered_map”）来存储目的地的信息和导航图的信息。首先，使用无序映射 “destinationInfo” 存储了各个目的地的编号和描述信息。键为目的地的编号，值为目的地的描述。然后，使用无序映射 “navigationGraph”存储了导航图的信息。它的键是起点的编号，值是另一个无序映射，其中键是终点的编号，值是一个二元组，包含了到达终点的距离和导航所需的时间。接下来，用户输入起点编号和终点编号，并进行判断是否有效。如果起点或终点的编号不存在于 “destinationInfo”中，则提示输入有效的起点和终点编号。然后，使用 Dijkstra 算法计算从起点到终点的最短路径。首先初始化距离和前驱节点的映射，并将所有节点标记为未访问。然后，循环遍历未访问的节点，选择距离最小的节点作为当前节点，并更新与其相邻节点的距离和前驱节点。直到找到终点或所有节点都被访问过。如果找不到最短路径（即终点的前驱节点为-1），则输出无法找到最短路径的信息。如果找到了最短路径，将路径存储在向量 `path` 中，并输出最短路径的编号序列。最后，输出最短路径的长度，并根据编号在 “destinationInfo”中查找并输出详细信息。实现了根据起点和终点之间的最短路径进行校园导游，并提供了路径长度和详细信息的输出。
+1、使用无序映射 “destinationInfo” 存储了各个目的地的编号和描述信息。键为目的地的编号，值为目的地的描述。
+2、使用无序映射 “navigationGraph”存储了导航图的信息。它的键是起点的编号，值是另一个无序映射，其中键是终点的编号，值是一个二元组，包含了到达终点的距离和导航所需的时间。
+3、用户输入起点编号和终点编号，并进行判断是否有效。如果起点或终点的编号不存在于 “destinationInfo”中，则提示输入有效的起点和终点编号。
+4、使用 Dijkstra 算法计算从起点到终点的最短路径。首先初始化距离和前驱节点的映射，并将所有节点标记为未访问。
+5、循环遍历未访问的节点，选择距离最小的节点作为当前节点，并更新与其相邻节点的距离和前驱节点。直到找到终点或所有节点都被访问过。如果找不到最短路径（即终点的前驱节点为-1），则输出无法找到最短路径的信息。如果找到了最短路径，将路径存储在向量 “path” 中，并输出最短路径的编号序列。最后，输出最短路径的长度，并根据编号在“destinationInfo”中查找并输出详细信息。
+6、实现了根据起点和终点之间的最短路径进行校园导游，并提供了路径长度和详细信息的输出。
 
 ## 5.3 算法实现
 导航系统
 ```
 void EventManagementSystem::CampusGuide() {
-
     unordered_map<int, string> destinationInfo = {
-
-        {1, "行政楼，用途：办公楼"},
-
-        {2, "海韵湖，用途：湖泊，风景优美"},
-
-        {3, "图书馆，用途：查阅资料，自习室"},
-
-        {4, "东食堂，用途：进餐休息"},
-
-        {5, "东操场，用途：跑道，足球场"},
-
-        {6, "南门，用途：学校的主门"},
-
-        {7, "文体中心，用途：室内运动中心，船院剧场"},
-
-        {8, "西操场，用途：跑道，足球场"},
-
-        {9, "经世楼，用途：教学楼"},
-
-        {10, "文理大楼，用途：实验中心，教学楼"},
-
-        {11, "西食堂，用途：进餐休息"},
-
-        {12, "西宿舍区，用途：学生宿舍"}
-
+            {1, "行政楼，用途：办公楼"},
+            {2, "海韵湖，用途：湖泊，风景优美"},
+            {3, "图书馆，用途：查阅资料，自习室"},
+            {4, "东食堂，用途：进餐休息"},
+            {5, "东操场，用途：跑道，足球场"},
+            {6, "南门，用途：学校的主门"},
+            {7, "文体中心，用途：室内运动中心，船院剧场"},
+            {8, "西操场，用途：跑道，足球场"},
+            {9, "经世楼，用途：教学楼"},
+            {10, "文理大楼，用途：实验中心，教学楼"},
+            {11, "西食堂，用途：进餐休息"},
+            {12, "西宿舍区，用途：学生宿舍"}
     };
 
     unordered_map<int, unordered_map<int, pair<int, int>>> navigationGraph = {
-
-        {1, {{2, {300, 2}}, {10, {700, 10}}}},
-
-        {2, {{3, {600, 3}}, {1, {300, 1}}}},
-
-        {3, {{10, {400, 10}}, {8, {550, 8}}, {4, {100, 4}}, {2, {300, 2}}}},
-
-        {4, {{7, {550, 7}}, {5, {100, 5}}, {3, {100, 3}}}},
-
-        {5, {{6, {250, 6}}, {4, {100, 4}}}},
-
-        {6, {{7, {250, 7}}, {12, {700, 12}}, {5, {250, 5}}}},
-
-        {7, {{8, {100, 8}}, {6, {250, 6}}, {11, {300, 11}}, {4, {550, 4}}}},
-
-        {8, {{9, {100, 9}}, {7, {100, 7}}, {11, {250, 11}}, {3, {550, 3}}}},
-
-        {9, {{10, {100, 10}}, {8, {100, 8}}}},
-
-        {10, {{9, {100, 9}}, {1, {700, 1}}, {3, {400, 3}}}},
-
-        {11, {{12, {200, 12}}, {8, {250, 8}}, {7, {300, 7}}}},
-
-        {12, {{11, {200, 11}}, {6, {700, 6}}}}
-
+            {1, {{2, {300, 2}}, {10, {700, 10}}}},
+            {2, {{3, {600, 3}}, {1, {300, 1}}}},
+            {3, {{10, {400, 10}}, {8, {550, 8}}, {4, {100, 4}}, {2, {300, 2}}}},
+            {4, {{7, {550, 7}}, {5, {100, 5}}, {3, {100, 3}}}},
+            {5, {{6, {250, 6}}, {4, {100, 4}}}},
+            {6, {{7, {250, 7}}, {12, {700, 12}}, {5, {250, 5}}}},
+            {7, {{8, {100, 8}}, {6, {250, 6}}, {11, {300, 11}}, {4, {550, 4}}}},
+            {8, {{9, {100, 9}}, {7, {100, 7}}, {11, {250, 11}}, {3, {550, 3}}}},
+            {9, {{10, {100, 10}}, {8, {100, 8}}}},
+            {10, {{9, {100, 9}}, {1, {700, 1}}, {3, {400, 3}}}},
+            {11, {{12, {200, 12}}, {8, {250, 8}}, {7, {300, 7}}}},
+            {12, {{11, {200, 11}}, {6, {700, 6}}}}
     };
-    
-    //输入起点终点
-    
-    //查找并输出路径
-    
-    //查找并输出最短路径
+
+    cout << "1.行政楼 " << "2.海韵湖 " << "3.图书馆 " << "4.东食堂 " << "5.东操场 "<< "6.南门\n" << "7.文体中心" << "8.西操场 " << "9.经世楼 " << "10.文理大楼" << "11.西食堂 " << "12.西宿舍区" << endl;
+
+    int start, end;
+    cout << "请输入起点编号：" << endl;
+    cin >> start;
+    cout << "请输入终点编号：" << endl;
+    cin >> end;
+
+    if (destinationInfo.find(start) == destinationInfo.end() || destinationInfo.find(end) == destinationInfo.end()) {
+        cout << "请输入有效的起点和终点编号！" << endl;
+        return;
+    }
+
+    unordered_map<int, int> distance;//距离
+    unordered_map<int, int> prev;//前驱节点
+    vector<int> unvisited;//未访问容器
+    //初始化距离和前驱节点，将所有节点标记为未访问
+    for (const auto& pair : destinationInfo) {
+        const int& destination = pair.first;
+        distance[destination] = numeric_limits<int>::max();
+        prev[destination] = -1;
+        unvisited.push_back(destination);
+    }
+    distance[start] = 0;
+    //循环遍历未访问的节点
+    while (!unvisited.empty()) {
+        int u = unvisited[0];
+        int minDistance = distance[u];
+        for (const int& destination : unvisited) {
+            if (distance[destination] < minDistance) {
+                u = destination;
+                minDistance = distance[destination];//选择距离最小的节点作为当前节点
+            }
+        }
+
+        unvisited.erase(remove(unvisited.begin(), unvisited.end(), u), unvisited.end());
+
+        if (u == end) {
+            break;
+        }
+        //更新与其相邻节点的距离和前驱节点
+        for (const auto& neighbor : navigationGraph[u]) {
+            const int& v = neighbor.first;
+            int altDistance = distance[u] + neighbor.second.first;
+            if (altDistance < distance[v]) {
+                distance[v] = altDistance;
+                prev[v] = u;
+            }
+        }
+    }
+
+    if (prev[end] == -1) {
+        cout << "无法找到最短路径" << endl;
+        return;
+    }
+
+    vector<int> path;
+    int current = end;
+    while (current != start) {
+        path.push_back(current);
+        current = prev[current];
+    }
+    path.push_back(start);
+
+    reverse(path.begin(), path.end());
+
+    cout << "最短路径为：" << endl;
+    for (size_t i = 0; i < path.size(); ++i) {
+        cout << path[i];
+        if (i != path.size() - 1) {
+            cout << " -> ";
+        }
+    }
+    cout << endl;
+
+    cout << "路径长度为：" << distance[end] << " 米" << endl;
+    cout << "详细信息：" << endl;
+    for (const int& destination : path) {
+        cout << destination << ": " << destinationInfo[destination] << endl;
+    }
 }
 ```
-
+计算路径长度
+```
+int EventManagementSystem::CalculatePathLength(TeamNode* node, const string& teamNumber, int level) {
+    if (node == nullptr) {
+        return 0;  // 未找到目标节点
+    }
+    if (teamNumber < node->team.teamNumber) {
+        return 1 + CalculatePathLength(node->left, teamNumber, level + 1);
+    }
+    else if (teamNumber > node->team.teamNumber) {
+        return 1 + CalculatePathLength(node->right, teamNumber, level + 1);
+    }
+    else {
+        return level;  // 找到目标节点，返回路径长度
+    }
+}
+```
 # 6菜单设计
 主菜单
 ```
@@ -636,7 +866,7 @@ void EventManagementSystem::CampusGuide() {
         cout << "====================================\n";
         cout << "=========       菜单      ==========\n";
         cout << "=========1. 管理参赛队伍信息==========\n";
-        cout << "=========2. 读取参赛队伍信息==========\n";
+        cout << "=========2. 浏览参赛队伍信息==========\n";
         cout << "=========3. 查询参赛队伍信息=========\n";
         cout << "=========    4. 叫号系统   ==========\n";
         cout << "=========    5. 导航服务   ==========\n";
@@ -647,8 +877,7 @@ void EventManagementSystem::CampusGuide() {
 ```
         cout << "============= 菜单 =============\n";
         cout << "1. 增加参赛队伍信息\n";
-        cout << "2. 删除参赛队伍信息\n";
-        cout << "3. 修改参赛队伍信息\n";
+        cout << "2. 修改参赛队伍信息\n";
         cout << "0.      退出\n";
         cout << "===============================\n";
 ```
@@ -656,29 +885,26 @@ void EventManagementSystem::CampusGuide() {
 
 # 7类定义
 ```
-class ProgrammingContestManagementSystem{
-public:    
-      void DeleteTeam(string teamNumber);    
-      void Deletefile(string id);    
-      TeamNode* RotateLeft(TeamNode* node);    
-      TeamNode* RotateRight(TeamNode* node);    
-      int GetHeight(TeamNode* node);    
-      int GetBalanceFactor(TeamNode* node);    
-      TeamNode* SearchNode(TeamNode* current, const string& teamNumber);    
-      TeamNode* DeleteNode(TeamNode* current, const string& teamNumber);    
-      TeamNode* FindMinimumNode(TeamNode* current);    
-      void UpdateInFile(string teamNumber, const Team& updatedInfo);    
-      void ModifyTeam();    
-      void Management();    
-      void SearchTeam();    
-      void SearchTeamByUniversity(const string& university, const vector<Team>& teamInfos);    
-      void FinalsCallSystem(const vector<Team>& teamInfos);    
-      void InsertNode(TeamNode* current, TeamNode* newNode);    
-      void LoadTeamsFromFile();    
-      void AddTeam();    
-      void CampusGuide();    
-      int CalculatePathLength(TeamNode* node, const string& teamNumber, int level);
-};
+class EventManagementSystem
+{
+public:
+    TeamNode* SearchNode(TeamNode* current, const string& teamNumber);//查找队伍节点
+    void UpdateInFile(string teamNumber, const Team& updatedInfo);//更新文件内队伍信息
+    void ModifyTeam();//修改队伍信息
+    void Management();//管理队伍信息
+    void SearchTeam();//查询队伍信息
+    void InsertNode(TeamNode* current, TeamNode* newNode);//插入队伍节点
+    void LoadTeamsFromFile();//从文件中读取队伍信息
+    void AddTeam();//添加队伍信息
+    void CampusGuide();//校园导航
+    void simulateTeamStatusDisplay();//模拟队伍状态显示
+    void simulateCompetition(ifstream& file);//模拟比赛
+    void printCurrentStatus(const vector<vector<Team>>& rooms, const time_t& currentTime);//打印当前状态
+    bool isCompetitionFinished(const vector<vector<Team>>& rooms);//判断比赛是否结束
+    int CalculatePathLength(TeamNode* node, const string& teamNumber, int level);//计算路径长度
+    void selectionSort(vector<Team>& data);//选择排序
+    string statusToString(TeamStatus status);//队伍状态转字符串
+}；
 ```
 # 校园地图
 
